@@ -1,106 +1,33 @@
-import collision
+# main.py
+from collision.utils import isCorrectRect, isCollisionRect, intersectionAreaRect, intersectionAreaMultiRect, RectCorrectError
 
-# Тестирование функции проверки корректности прямоугольника
-rect_correct = [(1, 1), (5, 5)]  # Корректный
-rect_incorrect = [(5, 5), (1, 1)]  # Некорректный
 
-print(f"   Прямоугольник {rect_correct} корректный: {isCorrectRec(rect_correct)}")
-print(f"   Прямоугольник {rect_incorrect} корректный: {isCorrectRec(rect_incorrect)}")
+# Задание 2
+print("Задание 2:", isCorrectRect([(-3.4, 1), (9.2, 10)]))
 
-# Тестирование функции определения пересечения прямоугольников
-rect1 = [(1, 1), (4, 4)]
-rect2 = [(2, 2), (5, 5)]  # Должны пересекаться с rect1
-rect3 = [(6, 6), (8, 8)]  # Не должны пересекаться с rect1
-
-print(f"   Прямоугольник {rect1} и {rect2} пересекаются: {isCollisionRect(rect1, rect2)}")
-print(f"   Прямоугольник {rect1} и {rect3} пересекаются: {isCollisionRect(rect1, rect3)}")
-
-# Тестирование функции вычисления площади пересечения двух прямоугольников
-rect_a = [(0, 0), (3, 3)]
-rect_b = [(1, 1), (4, 4)]  # Пересекаются с rect_a
-rect_c = [(5, 5), (7, 7)]  # Не пересекаются с rect_a
-
-area_ab = intersectionAreaRect(rect_a, rect_b)  # Площадь пересечения a и b
-area_ac = intersectionAreaRect(rect_a, rect_c)  # Площадь пересечения a и c (должна быть 0)
-
-print(f"   Площадь пересечения {rect_a} и {rect_b}: {area_ab}")
-print(f"   Площадь пересечения {rect_a} и {rect_c}: {area_ac}")
-
-# Тестирование обработки исключений для некорректных прямоугольников
+# Задание 3
 try:
-    # Некорректный прямоугольник: точки в неправильном порядке
-    intersectionAreaRect([(1, 1), (5, 5)], [(6, 6), (3, 3)])
+    print("Задание 3:", isCollisionRect([(-3.4, 1), (9.2, 10)], [(-7.4, 0), (13.2, 12)]))
+    print("Задание 3:", isCollisionRect([(1, 1), (2, 2)], [(3, 17), (13, 1)]))
 except RectCorrectError as e:
-    print(f"   Поймано исключение: {e}")  # Должно выбросить исключение
+    print("Задание 3 Ошибка:", e)
 
-# Тестирование функции вычисления площади пересечения нескольких прямоугольников
-# Случай 1: Прямоугольники с частичным перекрытием
-rectangles1 = [
-    [(1, 1), (5, 5)],
-    [(2, 2), (6, 6)],
-    [(3, 3), (7, 7)]
-]
-
-# Случай 2: Непересекающиеся прямоугольники
-rectangles2 = [
-    [(1, 1), (2, 2)],
-    [(3, 3), (4, 4)],
-    [(5, 5), (6, 6)]
-]
-
-# Случай 3: Прямоугольники с полным вложением
-rectangles3 = [
-    [(0, 0), (10, 10)],   # Самый большой
-    [(2, 2), (8, 8)],     # Внутри первого
-    [(3, 3), (7, 7)]      # Внутри второго
-]
-
-# Вычисление площадей пересечения для всех трех случаев
-area1 = intersectionAreaMultiRect(rectangles1)
-area2 = intersectionAreaMultiRect(rectangles2)  # Должно быть 0
-area3 = intersectionAreaMultiRect(rectangles3)  # Площадь самого маленького
-
-print(f"   Площадь пересечения всех прямоугольников в rectangles1: {area1}")
-print(f"   Площадь пересечения всех прямоугольников в rectangles2: {area2}")
-print(f"   Площадь пересечения всех прямоугольников в rectangles3: {area3}")
-
-# Тестирование граничных случаев
-empty_list = []
-print(f"   Площадь пересечения пустого списка: {intersectionAreaMultiRect(empty_list)}")  # Должно быть 0
-
-single_rect = [[(0, 0), (5, 5)]]
-print(f"   Площадь пересечения одного прямоугольника: {intersectionAreaMultiRect(single_rect)}")  # Площадь самого прямоугольника
-
-# Тестирование со сложным набором прямоугольников
-complex_rectangles = [
-    [(0, 0), (8, 6)],      
-    [(2, 1), (7, 5)],      
-    [(3, 2), (6, 4)],      
-    [(4, 2.5), (5.5, 3.5)] 
-]
-
-# Вывод всех прямоугольников для наглядности
-for i, rect in enumerate(complex_rectangles, 1):
-    print(f"   {i}: {rect}")
-
-# Проверка попарных пересечений
-for i in range(len(complex_rectangles)):
-    for j in range(i + 1, len(complex_rectangles)):
-        collides = isCollisionRect(complex_rectangles[i], complex_rectangles[j])
-        print(f"   Прямоугольник {i+1} и {j+1}: {'пересекаются' if collides else 'не пересекаются'}")
-
-# Вычисление общей площади пересечения всех прямоугольников
-complex_area = intersectionAreaMultiRect(complex_rectangles)
-print(f"\n   Общая площадь пересечения всех прямоугольников: {complex_area}")
-
-# Тестирование обработки исключений в функции для нескольких прямоугольников
+# Задание 4
 try:
-    invalid_rectangles = [
-        [(1, 1), (5, 5)],   
-        [(6, 6), (3, 3)],    
-        [(2, 2), (7, 7)]     
-    ]
-    result = intersectionAreaMultiRect(invalid_rectangles)
-    print(f"   Результат: {result}")
+    area2 = intersectionAreaRect([(-3, 1), (9, 10)], [(-7, 0), (13, 12)])
+    print("Задание 4 площадь:", area2)
+except ValueError as e:
+    print("Задание 4 Ошибка:", e)
+
+# Задание 5 
+rectangles = [
+    [(-3, 1), (9, 10)],
+    [(-7, 0), (13, 12)],
+    [(0, 0), (5, 5)],
+    [(2, 2), (7, 7)]
+]
+try:
+    multi_result = intersectionAreaMultiRect(rectangles)
+    print(f"Задание 5 площадь пересечения всех прямоугольников: {multi_result}")
 except RectCorrectError as e:
-    print(f"   Поймано исключение: {e}")  # Должно выбросить исключение
+    print(e)
