@@ -1,6 +1,4 @@
-# main.py
 from collision.utils import isCorrectRect, isCollisionRect, intersectionAreaRect, intersectionAreaMultiRect, RectCorrectError
-
 
 # Задание 2
 print("Задание 2:", isCorrectRect([(-3.4, 1), (9.2, 10)]))
