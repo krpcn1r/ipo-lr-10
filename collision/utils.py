@@ -54,9 +54,7 @@ def intersectionAreaRect(mas1, mas2):
     
     # Если есть пересечение, вычисляем площадь
     if(isCollisionRect(mas1, mas2) == True):
-        # Ширина пересечения = мин(правые границы) - макс(левые границы)
         width = min(x2, x4) - max(x1, x3)
-        # Высота пересечения = мин(верхние границы) - макс(нижние границы)
         height = min(y2, y4) - max(y1, y3)
         # Проверка на случай отрицательных размеров (паранойя)
         if(width <= 0 or height <= 0):
@@ -75,7 +73,6 @@ def intersectionAreaMultiRect(rectangles):
         if not isCorrectRec(rect):
             raise RectCorrectError(i)  # i-й прямоугольник некорректен
     
-    # Инициализация границ общего пересечения первым прямоугольником
     x_left_max = rectangles[0][0][0]    # Максимальная левая граница
     y_bottom_max = rectangles[0][0][1]  # Максимальная нижняя граница
     x_right_min = rectangles[0][1][0]   # Минимальная правая граница
@@ -85,16 +82,12 @@ def intersectionAreaMultiRect(rectangles):
     for i in range(1, len(rectangles)):
         rect = rectangles[i]
         
-        # Общая левая граница = макс(левых границ всех прямоугольников)
         x_left_max = max(x_left_max, rect[0][0])
-        # Общая нижняя граница = макс(нижних границ всех прямоугольников)
         y_bottom_max = max(y_bottom_max, rect[0][1])
-        # Общая правая граница = мин(правых границ всех прямоугольников)
         x_right_min = min(x_right_min, rect[1][0])
-        # Общая верхняя граница = мин(верхних границ всех прямоугольников)
         y_top_min = min(y_top_min, rect[1][1])
     
-    # Проверка, существует ли общая область пересечения
+    # Проверяю, существует ли общая область пересечения
     if x_left_max < x_right_min and y_bottom_max < y_top_min:
         width = x_right_min - x_left_max
         height = y_top_min - y_bottom_max
@@ -102,7 +95,6 @@ def intersectionAreaMultiRect(rectangles):
     else:
         return 0  # Нет общей области пересечения
 
-# Основной блок для тестирования функций
 if __name__ == "__main__":
     # Пример 1: Частично пересекающиеся прямоугольники
     rects1 = [
@@ -110,28 +102,28 @@ if __name__ == "__main__":
         [(2, 2), (6, 6)],   # Прямоугольник 2 (пересекается с 1)
         [(3, 3), (7, 7)]    # Прямоугольник 3 (пересекается с 1 и 2)
     ]
-    print(f"Пример 1: {intersectionAreaMultiRect(rects1)}")  # Ожидается: площадь пересечения всех трех
+    print(f"Пример 1: {intersectionAreaMultiRect(rects1)}")  
     
     # Пример 2: Непересекающиеся прямоугольники
     rects2 = [
-        [(1, 1), (2, 2)],   # Не пересекается с другими
-        [(3, 3), (4, 4)],   # Не пересекается с другими
-        [(5, 5), (6, 6)]    # Не пересекается с другими
+        [(1, 1), (2, 2)],  
+        [(3, 3), (4, 4)],   
+        [(5, 5), (6, 6)]    
     ]
-    print(f"Пример 2: {intersectionAreaMultiRect(rects2)}")  # Ожидается: 0
+    print(f"Пример 2: {intersectionAreaMultiRect(rects2)}")  
     
     # Пример 3: Один прямоугольник
     rects3 = [
-        [(0, 0), (10, 10)]  # Только один прямоугольник
+        [(0, 0), (10, 10)] 
     ]
-    print(f"Пример 3: {intersectionAreaMultiRect(rects3)}")  # Ожидается: площадь этого прямоугольника (100)
+    print(f"Пример 3: {intersectionAreaMultiRect(rects3)}") 
     
     # Пример 4: Некорректный прямоугольник (обработка исключения)
     try:
         rects4 = [
-            [(1, 1), (5, 5)],   # Корректный
-            [(6, 6), (3, 3)],   # Некорректный: x1 > x2 и y1 > y2
-            [(2, 2), (7, 7)]    # Этот не будет проверяться из-за исключения
+            [(1, 1), (5, 5)],   
+            [(6, 6), (3, 3)],  
+            [(2, 2), (7, 7)]   
         ]
         print(f"Пример 4: {intersectionAreaMultiRect(rects4)}")
     except RectCorrectError as e:
